@@ -1,0 +1,31 @@
+name := path-win-2-wsl
+module := github.com/marcusbiava/$(name)
+
+hello:
+	echo "Hello from $(module)"
+	
+go-mod-init:
+	go mod init $(module)
+
+cobra-cli-init:
+	cobra-cli init
+	
+cobra-cli-add:
+	cobra-cli add $(name)
+
+mkdir-app:
+	mkdir -pv app	
+
+init: hello mkdir-app go-mod-init cobra-cli-init cobra-cli-add
+
+run:
+	go run main.go convert "C:\Users\marcu\Downloads"
+
+build:
+	go build -o bin/main main.go
+
+compile:
+	echo "Compiling for every OS and Platform"
+	GOOS=freebsd GOARCH=386 go build -o bin/main-freebsd-386 main.go
+	GOOS=linux GOARCH=386 go build -o bin/main-linux-386 main.go
+	GOOS=windows GOARCH=386 go build -o bin/main-windows-386 main.go	
